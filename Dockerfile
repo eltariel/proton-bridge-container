@@ -8,7 +8,7 @@ RUN apk update && \
     apk upgrade && \
     apk add git make bash gcc musl-dev libsecret-dev
 
-ADD "${BRIDGE_REPO}#${BRIDGE_VERSION}" /build/
+ADD --keep-git-dir "${BRIDGE_REPO}#${BRIDGE_VERSION}" /build/
 WORKDIR /build/
 RUN make build-nogui vault-editor
 

@@ -3,7 +3,7 @@ set -euo pipefail
 
 # defaults
 VERSION=""
-BUILDER="podman"
+BUILDER="docker"
 IMAGE_NAME="ghcr.io/eltariel/proton-bridge-container"
 
 USAGE="$(cat <<EOF
@@ -15,7 +15,7 @@ Usage: ./build_container.sh [-i|--image "image/name/here"] [-v|--version "tag or
                   Default is the latest release.
 -p|--podman     Use podman to build the image.
 -d|--docker     Use docker to build the image.
-                  Default is podman. If specified multiple times, the last wins.
+                  Default is docker. If specified multiple times, the last wins.
 EOF
 )"
 

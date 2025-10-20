@@ -1,6 +1,6 @@
 # Proton Mail Bridge container
 
-Run the Proton Mail Bridge in a container, allowing external access using socat tunnels. 
+Run the Proton Mail Bridge in a container, allowing external access using socat tunnels.
 This image runs as a non-root user.
 
 ## Running
@@ -16,13 +16,19 @@ This container exposes the following ports:
 - SMTP: 1025
 - IMAP: 1143
 
-The `pass` store and associated GPG keys are stored in `/data/security`, and all other proton mail bridge data is stored in `/data/bridge`.
+The `pass` store and associated GPG keys are stored in `/data/security`, and all other proton mail bridge data is stored
+in `/data/bridge`.
 
 ## Building
 
-The latest release tag from the upstream `proton-bridge` repo must be provided in the `BRIDGE_VERSION` build arg, so that the correct source code can be checked out and built. There's a script to do this automatically; running it with no arguments will build a container for the latest release.
+The latest release tag from the upstream `proton-bridge` repo must be provided in the `BRIDGE_VERSION` build arg, so
+that the correct source code can be checked out and built. There's a script to do this automatically; running it with no
+arguments will build a container for the latest release.
 
 ```shell
 ./build_container.sh --help
 ```
+
+Note that podman doesn't support the `--keep-git-dir` parameter used in the `ADD` command. The builder script will use
+docker to build but allows overriding this with podman - this will break the build.
 
