@@ -8,10 +8,9 @@ RUN apk update && \
     apk upgrade && \
     apk add git make bash gcc musl-dev libsecret-dev
 
+ADD "${BRIDGE_REPO}#${BRIDGE_VERSION}" /build/
 WORKDIR /build/
-RUN git clone -b "$BRIDGE_VERSION" "$BRIDGE_REPO" repo && \
-    cd repo && \
-    make build-nogui vault-editor
+RUN make build-nogui vault-editor
 
 
 # --- Runtime image
@@ -39,9 +38,9 @@ RUN apk update && \
     apk add pass gpg-agent socat libsecret
 
 WORKDIR /usr/bin/
-COPY --from=builder /build/repo/bridge /usr/bin/
-COPY --from=builder /build/repo/proton-bridge /usr/bin/
-COPY --from=builder /build/repo/vault-editor /usr/bin/
+COPY --from=builder /build/bridge /usr/bin/
+COPY --from=builder /build/proton-bridge /usr/bin/
+COPY --from=builder /build/vault-editor /usr/bin/
 
 WORKDIR /app/
 COPY entrypoint.sh /app/
