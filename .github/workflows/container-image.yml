@@ -25,6 +25,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: Get latest Proton Bridge release
+        id: bridge-version
+        run: |
+          BRIDGE_VERSION="$(
+            gh release list \
+              -R ProtonMail/proton-bridge \
+              --json isLatest,tagName \
+              --jq '.[]|select(.isLatest)|.tagName'
+          )"
+          echo "latest=${BRIDGE_VERSION}" >> "$GITHUB_OUTPUT"
       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -50,6 +61,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          build-args: |
+            BRIDGE_VERSION="${{ steps.bridge-version.outputs.latest }}"
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
