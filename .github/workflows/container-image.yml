@@ -28,6 +28,8 @@ jobs:
 
       - name: Get latest Proton Bridge release
         id: bridge-version
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           BRIDGE_VERSION="$(
             gh release list \
