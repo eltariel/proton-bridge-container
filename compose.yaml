@@ -1,0 +1,13 @@
+services:
+    protonmail-bridge:
+        volumes:
+            - bridge_data:/data/bridge
+            - security_data:/data/security
+        ports:
+            - 1025:1025/tcp
+            - 1143:1143/tcp
+        restart: unless-stopped
+        image: ghcr.io/eltariel/proton-bridge-container:latest
+volumes:
+    bridge_data:
+    security_data:
