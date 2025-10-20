@@ -48,9 +48,28 @@ if [ -z "$VERSION" ] ; then
   VERSION="$(curl -s -H "Accept: application/vnd.github+json" https://api.github.com/repos/ProtonMail/proton-bridge/releases/latest | jq -r '.tag_name')"
 fi
 
+labels=()
+annotations=()
+metadata=(
+  'org.opencontainers.image.title=Proton Bridge Container'
+  'org.opencontainers.image.authors=Ellie Tomkins'
+  "org.opencontainers.image.version=$VERSION"
+  "org.opencontainers.image.revision=$(git rev-parse HEAD)"
+  'org.opencontainers.image.description=Run the ProtonMail bridge in a container.'
+  'org.opencontainers.image.url=https://github.com/eltariel/proton-bridge-container'
+  'org.opencontainers.image.source=https://github.com/eltariel/proton-bridge-container'
+  'org.opencontainers.image.documentation=https://github.com/eltariel/proton-bridge-container/README.md'
+  'org.opencontainers.image.licenses=Unlicense'
+)
+for m in "${metadata[@]}" ; do
+  annotations+=("--annotation" "$m")
+  labels+=("--label" "$m")
+done
+
 echo "Building $VERSION with $BUILDER"
 "$BUILDER" build \
   --build-arg BRIDGE_VERSION="${VERSION}" \
+  "${labels[@]}" "${annotations[@]}" \
   --tag "${IMAGE_NAME}:${VERSION}" \
   --tag "${IMAGE_NAME}:latest" \
   --load \

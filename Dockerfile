@@ -16,29 +16,22 @@ RUN git clone -b "$BRIDGE_VERSION" "$BRIDGE_REPO" repo && \
 
 # --- Runtime image
 FROM alpine:latest
-LABEL authors="Ellie Tomkins"
-LABEL org.opencontainers.image.source="https://github.com/eltariel/proton-bridge-container"
-
+ARG BRIDGE_VERSION
 ARG ENV_SMTP_PORT=1025
 ARG ENV_IMAP_PORT=1143
 ENV SMTP_PORT=$ENV_SMTP_PORT
 ENV IMAP_PORT=$ENV_IMAP_PORT
 
+LABEL \
+  name="Proton Bridge Container" \
+  authors="Ellie Tomkins"
+
 EXPOSE ${ENV_SMTP_PORT}/tcp
 EXPOSE ${ENV_IMAP_PORT}/tcp
 
 # Add user to run the bridge
-RUN addgroup \
-      -S \
-      -g 1000 \
-      protonbridge && \
-    adduser \
-      -S \
-      -G protonbridge \
-      -h /data \
-      -D \
-      -u 1000 \
-      protonbridge
+RUN addgroup -g 1000 protonbridge && \
+    adduser -D -G protonbridge -h /data -u 1000 protonbridge
 
 # Install dependencies
 RUN apk update && \
