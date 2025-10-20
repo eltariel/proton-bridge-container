@@ -16,6 +16,7 @@ env:
 
 jobs:
   build-and-push-image:
+    name: Build and push container image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -64,7 +65,7 @@ jobs:
         with:
           context: .
           build-args: |
-            BRIDGE_VERSION="${{ steps.bridge-version.outputs.latest }}"
+            BRIDGE_VERSION=${{ steps.bridge-version.outputs.latest }}
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
