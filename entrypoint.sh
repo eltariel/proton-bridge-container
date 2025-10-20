@@ -48,12 +48,12 @@ fi
 socat TCP-LISTEN:"$SMTP_PORT",fork TCP:127.0.0.1:"$BRIDGE_SMTP_PORT" &
 socat TCP-LISTEN:"$IMAP_PORT",fork TCP:127.0.0.1:"$BRIDGE_IMAP_PORT" &
 
-if [ "$#" -eq 1 ]; then
-# Start a default Proton Mail Bridge on a fake tty, so it won't stop because of EOF
+if [ "$#" -eq 0 ]; then
+  # Start a default Proton Mail Bridge on a fake tty, so it won't stop because of EOF
   echo ">>> Starting bridge"
   rm -f commands
   mkfifo commands
-  tail -f commands | /usr/bin/bridge --cli "$@"
+  tail -f commands | /usr/bin/bridge --cli
 
   echo ">>> done"
 else
