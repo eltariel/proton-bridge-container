@@ -13,8 +13,8 @@ podman run -v bridge_data:/data/bridge -v security_data:/data/security -p 1025:1
 
 This container exposes the following ports:
 
-- SMTP: 1025
-- IMAP: 1143
+- SMTP: 8025
+- IMAP: 8143
 
 The `pass` store and associated GPG keys are stored in `/data/security`, and all other proton mail bridge data is stored
 in `/data/bridge`.
